@@ -65,6 +65,10 @@ class PancakesCommand extends TerminusCommand {
     fwrite($handle, $openxml);
     fclose($handle);
 
+    // Wake the Site
+    $environment->wake();
+
+    // Open in SequelPro
     $command = sprintf('%s %s', 'open', $tempfile);
     exec($command);
   }
