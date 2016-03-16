@@ -1,0 +1,9 @@
+{
+  "name": "derimagia/terminus-pancakes",
+  "description": "Pancakes - A Terminus plugin for Sequel Pro",
+  "homepage": "https://github.com/derimagia/terminus-pancakes",
+  "license": "MIT",
+  "require": {
+    "php": ">=5.4"
+  },
+}
