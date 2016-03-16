@@ -54,10 +54,10 @@ class PancakesCommand extends TerminusCommand {
     $mysql_port = $connection_info['mysql_port'];
     $mysql_database = $connection_info['mysql_database'];
 
-
     $this->log()->info('Opening {site} in SequelPro', array('site' => $site->get('name')));
 
-    $openxml = $this->getOpenFile($mysql_host, $mysql_port, $mysql_username, $mysql_password, $mysql_database);
+    $label = sprintf('%s [%s]', $site->get('name'), $env_id);
+    $openxml = $this->getOpenFile($label, $mysql_host, $mysql_port, $mysql_username, $mysql_password, $mysql_database);
 
     $tempfile = tempnam('/tmp', 'terminus-sequelpro') . '.spf';
 
@@ -72,7 +72,7 @@ class PancakesCommand extends TerminusCommand {
   /**
   * Gets the XML for opening a connection in Sequel Pro
   */
-  public function getOpenFile($mysql_host, $mysql_port, $mysql_username, $mysql_password, $mysql_database) {
+  public function getOpenFile($label, $mysql_host, $mysql_port, $mysql_username, $mysql_password, $mysql_database) {
     $mysql_host = htmlspecialchars($mysql_host);
     $mysql_port = htmlspecialchars($mysql_port);
     $mysql_username = htmlspecialchars($mysql_username);
@@ -97,7 +97,7 @@ class PancakesCommand extends TerminusCommand {
       <key>host</key>
       <string>${mysql_host}</string>
       <key>name</key>
-      <string>${mysql_username}@${mysql_host}</string>
+      <string>${label}</string>
       <key>user</key>
       <string>${mysql_username}</string>
       <key>password</key>
