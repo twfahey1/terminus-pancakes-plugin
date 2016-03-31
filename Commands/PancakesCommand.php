@@ -34,12 +34,12 @@ class PancakesCommand extends TerminusCommand {
    * : Environment to clear
    *
    * ## EXAMPLES
-   *  terminus site pconnect --site=test
+   *  terminus site pancakes --site=test
    *
-   * @subcommand pconnect
+   * @subcommand pancakes
    * @alias pc
    */
-  public function pconnect($args, $assoc_args) {
+  public function pancakes($args, $assoc_args) {
     $site = $this->sites->get(
       $this->input()->siteName(array('args' => $assoc_args))
     );
