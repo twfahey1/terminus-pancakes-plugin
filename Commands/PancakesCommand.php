@@ -54,23 +54,48 @@ class PancakesCommand extends TerminusCommand {
     $mysql_port = $connection_info['mysql_port'];
     $mysql_database = $connection_info['mysql_database'];
 
-    $this->log()->info('Opening {site} in SequelPro', array('site' => $site->get('name')));
-
-    $label = sprintf('%s [%s]', $site->get('name'), $env_id);
-    $openxml = $this->getOpenFile($label, $mysql_host, $mysql_port, $mysql_username, $mysql_password, $mysql_database);
-
-    $tempfile = tempnam('/tmp', 'terminus-sequelpro') . '.spf';
-
-    $handle = fopen($tempfile, "w");
-    fwrite($handle, $openxml);
-    fclose($handle);
-
     // Wake the Site
     $environment->wake();
 
-    // Open in SequelPro
-    $command = sprintf('%s %s', 'open', $tempfile);
-    exec($command);
+    if (\Terminus\Utils\isWindows()) {
+      $this->log()->info('Opening {site} in HeidiSQL', array('site' => $site->get('name')));
+
+      $possible_heidi_locations = array(
+        'C:\Program Files\HeidiSQL\heidisql.exe',
+        'C:\Program Files (x86)\HeidiSQL\heidisql.exe',
+        getenv('TERMINUS_PANCAKES_HEIDISQL_LOC'),
+      );
+
+      foreach ($possible_heidi_locations as $phl) {
+        if (file_exists($phl)) {
+          $phl = escapeshellarg($phl);
+          $mysql_host = escapeshellarg($mysql_host);
+          $mysql_port = escapeshellarg($mysql_port);
+          $mysql_username = escapeshellarg($mysql_username);
+          $mysql_password = escapeshellarg($mysql_password);
+          $command = sprintf('start /b "" %s -h=%s -P=%s -u=%s -p=%s', $phl, $mysql_host, $mysql_port, $mysql_username, $mysql_password);
+          exec($command);
+          break;
+        } else {
+          continue;
+        }
+      }
+    } else {
+      $this->log()->info('Opening {site} in SequelPro', array('site' => $site->get('name')));
+
+      $label = sprintf('%s [%s]', $site->get('name'), $env_id);
+      $openxml = $this->getOpenFile($label, $mysql_host, $mysql_port, $mysql_username, $mysql_password, $mysql_database);
+
+      $tempfile = tempnam('/tmp', 'terminus-sequelpro') . '.spf';
+
+      $handle = fopen($tempfile, "w");
+      fwrite($handle, $openxml);
+      fclose($handle);
+
+      // Open in SequelPro
+      $command = sprintf('%s %s', 'open', $tempfile);
+      exec($command);
+    }
   }
 
   /**
