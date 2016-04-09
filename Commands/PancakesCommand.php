@@ -101,7 +101,7 @@ class PancakesCommand extends TerminusCommand {
   /**
   * Gets the XML for opening a connection in Sequel Pro
   */
-  public function getOpenFile($label, $mysql_host, $mysql_port, $mysql_username, $mysql_password, $mysql_database) {
+  private function getOpenFile($label, $mysql_host, $mysql_port, $mysql_username, $mysql_password, $mysql_database) {
     $mysql_host = htmlspecialchars($mysql_host);
     $mysql_port = htmlspecialchars($mysql_port);
     $mysql_username = htmlspecialchars($mysql_username);
