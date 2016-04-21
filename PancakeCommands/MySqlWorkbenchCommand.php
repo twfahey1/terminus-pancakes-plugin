@@ -57,12 +57,12 @@ class MySqlWorkbenchCommand extends PancakesCommand {
     $os = strtoupper(substr(PHP_OS, 0, 3));
     switch ($os) {
       case 'DAR':
-        $candidates = array('/Applications/MySQLWorkbench.app/Contents/MacOS/MySQLWorkbench');
-        $workbench_home = getenv('HOME') . '/Library/Application Support/MySQL/Workbench/';
+        $this->app_location = '/Applications/MySQLWorkbench.app/Contents/MacOS/MySQLWorkbench';
+        $this->app_home_location = '~/Library/Application Support/MySQL/Workbench/';
         break;
       case 'LIN';
-        $candidates = array('/usr/bin/mysql-workbench');
-        $workbench_home = getenv('HOME') . '/.mysql/workbench/';
+        $this->app_location = 'mysql-workbench';
+        $this->app_home_location = '~/.mysql/workbench/';
         break;
       case 'WIN':
         $candidates = array(
@@ -71,32 +71,21 @@ class MySqlWorkbenchCommand extends PancakesCommand {
           "'" . getenv('TERMINUS_PANCAKES_MYSQLWORKBENCH_LOC') . "'",
         );
         $workbench_home = getenv('HOMEPATH') . '\\AppData\\Roaming\\MySQL\\Workbench\\';
+
+        foreach ($candidates as $candidate) {
+          if (file_exists($candidate)) {
+            $this->app_home_location = $workbench_home;
+            $this->app_location = '"' . $candidate . '"';
+            return TRUE;
+          }
+        }
+        return FALSE;
         break;
       default:
         return FALSE;
     }
 
-    // Try to find the app in the path
-    foreach ($assoc_args as $key => $arg) {
-      if ($key == 'app') {
-        if ($this->which($arg)) {
-          $this->app_home_location = $workbench_home;
-          $this->app_location = '"' . $arg . '"';
-          return TRUE;
-        }
-      }
-    }
-
-    // Try to find the app in typical locations
-    foreach ($candidates as $candidate) {
-      if (file_exists($candidate)) {
-        $this->app_home_location = $workbench_home;
-        $this->app_location = '"' . $candidate . '"';
-        return TRUE;
-      }
-    }
-
-    return FALSE;
+    return $this->which($this->app_location);
   }
 
   /**
