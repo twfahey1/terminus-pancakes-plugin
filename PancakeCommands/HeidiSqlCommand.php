@@ -12,7 +12,7 @@ class HeidiSqlCommand extends PancakesCommand {
   /**
    * {@inheritdoc}
    */
-  public $aliases = ['heidisql', 'heidi', 'hsql'];
+  public $aliases = ['heidisql', 'heidi'];
 
   /**
    * {@inheritdoc}

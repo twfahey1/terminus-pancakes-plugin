@@ -10,7 +10,7 @@ class MySqlWorkbenchCommand extends PancakesCommand {
   /**
    * {@inheritdoc}
    */
-  public $aliases = ['mysql-workbench', 'mysqlworkbench', 'workbench'];
+  public $aliases = ['mysql-workbench', 'workbench'];
 
   /**
    * {@inheritdoc}
@@ -35,13 +35,13 @@ class MySqlWorkbenchCommand extends PancakesCommand {
     $this->connection_info['domain'] = $domain;
     $this->connection_info['connection_id'] = md5($domain . '.connection');
     $this->connection_info['server_instance_id'] = md5($domain . '.server');
-    $parts = explode(':', $connection_info['sftp_url']);
+    $parts = explode(':', $this->connection_info['sftp_url']);
     if (isset($parts[2])) {
       $sftp_port = $parts[2];
     } else {
       $sftp_port = 2222;
     }
-    $connection_info['sftp_port'] = $sftp_port;
+    $this->connection_info['sftp_port'] = $sftp_port;
 
     $connections_xml = $this->getConnectionXml($this->connection_info);
     $connections_file = "{$this->app_home_location}connections.xml";

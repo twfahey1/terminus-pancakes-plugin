@@ -320,6 +320,73 @@ class PancakesCommand extends TerminusCommand {
       return $arg;
     }
   }
+
+  /**
+   * Opens the Site database using HeidiSQL
+   *
+   * ## OPTIONS
+   *
+   * [--site=<site>]
+   * : Site to Use
+   *
+   * [--env=<env>]
+   * : Environment
+   *
+   * ## EXAMPLES
+   *  terminus site heidisql --site=test
+   *
+   * @subcommand heidisql
+   * @alias heidi
+   */
+  public function heidi($args, $assoc_args) {
+    $assoc_args['app'] = 'heidi';
+    $this->pancakes($args, $assoc_args);
+  }
+
+  /**
+   * Opens the Site database using MySQL Workbench
+   *
+   * ## OPTIONS
+   *
+   * [--site=<site>]
+   * : Site to Use
+   *
+   * [--env=<env>]
+   * : Environment
+   *
+   * ## EXAMPLES
+   *  terminus site mysql-workbench --site=test
+   *
+   * @subcommand mysql-workbench
+   * @alias workbench
+   */
+  public function workbench($args, $assoc_args) {
+    $assoc_args['app'] = 'workbench';
+    $this->pancakes($args, $assoc_args);
+  }
+
+  /**
+   * Opens the Site database using Sequel Pro
+   *
+   * ## OPTIONS
+   *
+   * [--site=<site>]
+   * : Site to Use
+   *
+   * [--env=<env>]
+   * : Environment
+   *
+   * ## EXAMPLES
+   *  terminus site sequelpro --site=test
+   *
+   * @subcommand sequelpro
+   * @alias sequel
+   */
+  public function sequel($args, $assoc_args) {
+    $assoc_args['app'] = 'sequel';
+    $this->pancakes($args, $assoc_args);
+  }
+
 }
 
 // Include Sub-Commands - Terminus uses DirectoryIterator so we need to have better control over the order.
