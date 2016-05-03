@@ -32,7 +32,7 @@ class SequelProCommand extends PancakesCommand {
   /**
    * Validates the app can be used
    */
-  protected function validate($args, $assoc_args) {
+  protected function validate() {
     // @TODO: Validate SequelPro better
     // @TODO: New Terminus has better way to check OS
     return strtoupper(substr(PHP_OS, 0, 3)) === 'DAR';

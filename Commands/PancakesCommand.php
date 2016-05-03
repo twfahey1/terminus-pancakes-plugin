@@ -61,7 +61,6 @@ class PancakesCommand extends TerminusCommand {
    * Object constructor
    *
    * @param array $options
-   * @return $this
    */
   public function __construct(array $options = []) {
     // Require Login for the Main Command, The subcommands don't need to be rechecked
@@ -109,34 +108,7 @@ class PancakesCommand extends TerminusCommand {
     $this->connection_info = $this->environment->connectionInfo();
     $this->connection_info['site_label'] = sprintf('%s [%s]', $this->site->get('name'), $this->environment->get('id'));
 
-    // Find our Children!
-    $classes = get_declared_classes();
-
-    $candidate_instances = [];
-
-    foreach ($classes as $class) {
-      $reflection = new \ReflectionClass($class);
-      if ($reflection->isSubclassOf(__CLASS__)) {
-        $candidate_instance = $reflection->newInstanceArgs([[
-          'runner' => $this->runner,
-          'logger' => $this->log(),
-          'sites'  => $this->sites,
-          'site'   => $this->site,
-          'environment'  => $this->environment,
-          'connection_info'  => $this->connection_info,
-          'require_login'  => FALSE,
-        ]]);
-
-        if (method_exists($candidate_instance, 'validate')) {
-          if (!$candidate_instance->validate($args, $assoc_args)) {
-            continue;
-          }
-        }
-
-        $candidate_instances[] = $candidate_instance;
-      }
-    }
-
+    $candidate_instances = $this->getCandinatePlugins();
     /* @var PancakesCommand|null $instance */
     $instance = NULL;
 
@@ -261,6 +233,7 @@ class PancakesCommand extends TerminusCommand {
 
   /**
    * @return string
+   * @non-command
    */
   public function __toString() {
     return $this->app;
@@ -322,71 +295,40 @@ class PancakesCommand extends TerminusCommand {
   }
 
   /**
-   * Opens the Site database using HeidiSQL
-   *
-   * ## OPTIONS
-   *
-   * [--site=<site>]
-   * : Site to Use
-   *
-   * [--env=<env>]
-   * : Environment
-   *
-   * ## EXAMPLES
-   *  terminus site heidisql --site=test
-   *
-   * @subcommand heidisql
-   * @alias heidi
+   * Gets Candinate Classes that are Loaded
+   * @return array
    */
-  public function heidi($args, $assoc_args) {
-    $assoc_args['app'] = 'heidi';
-    $this->pancakes($args, $assoc_args);
-  }
+  private function getCandinatePlugins() {
+    // Find our Children!
+    $classes = get_declared_classes();
 
-  /**
-   * Opens the Site database using MySQL Workbench
-   *
-   * ## OPTIONS
-   *
-   * [--site=<site>]
-   * : Site to Use
-   *
-   * [--env=<env>]
-   * : Environment
-   *
-   * ## EXAMPLES
-   *  terminus site mysql-workbench --site=test
-   *
-   * @subcommand mysql-workbench
-   * @alias workbench
-   */
-  public function workbench($args, $assoc_args) {
-    $assoc_args['app'] = 'workbench';
-    $this->pancakes($args, $assoc_args);
-  }
+    $candidate_instances = [];
 
-  /**
-   * Opens the Site database using Sequel Pro
-   *
-   * ## OPTIONS
-   *
-   * [--site=<site>]
-   * : Site to Use
-   *
-   * [--env=<env>]
-   * : Environment
-   *
-   * ## EXAMPLES
-   *  terminus site sequelpro --site=test
-   *
-   * @subcommand sequelpro
-   * @alias sequel
-   */
-  public function sequel($args, $assoc_args) {
-    $assoc_args['app'] = 'sequel';
-    $this->pancakes($args, $assoc_args);
-  }
+    foreach ($classes as $class) {
+      $reflection = new \ReflectionClass($class);
+      if ($reflection->isSubclassOf(__CLASS__)) {
+        $candidate_instance = $reflection->newInstanceArgs([[
+          'runner' => $this->runner,
+          'logger' => $this->log(),
+          'sites'  => $this->sites,
+          'site'   => $this->site,
+          'environment'  => $this->environment,
+          'connection_info'  => $this->connection_info,
+          'require_login'  => FALSE,
+        ]]);
 
+        if (method_exists($candidate_instance, 'validate')) {
+          if (!$candidate_instance->validate()) {
+            continue;
+          }
+        }
+
+        $candidate_instances[] = $candidate_instance;
+      }
+    }
+
+    return $candidate_instances;
+  }
 }
 
 // Include Sub-Commands - Terminus uses DirectoryIterator so we need to have better control over the order.

@@ -59,7 +59,7 @@ class MySqlWorkbenchCommand extends PancakesCommand {
    *
    * @return bool
    */
-  protected function validate($args, $assoc_args) {
+  protected function validate() {
      /* @TODO: Terminus now has Utils for this, wait until most people are using it and switch it */
     $os = strtoupper(substr(PHP_OS, 0, 3));
     switch ($os) {

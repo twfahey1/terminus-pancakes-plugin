@@ -27,7 +27,7 @@ class HeidiSqlCommand extends PancakesCommand {
   /**
    * Validates the app can be used
    */
-  protected function validate($args, $assoc_args) {
+  protected function validate() {
     if (!Utils\isWindows()) {
       return FALSE;
     }
@@ -38,6 +38,7 @@ class HeidiSqlCommand extends PancakesCommand {
       '\Program Files (x86)\HeidiSQL\heidisql.exe',
       "'" . getenv('TERMINUS_PANCAKES_HEIDISQL_LOC') . "'",
     );
+    
     foreach ($candidates as $candinate) {
       if (file_exists($candinate)) {
         $this->app_location = '"' . $candinate . '"';
