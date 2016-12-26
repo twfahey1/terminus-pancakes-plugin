@@ -1,11 +1,11 @@
 <?php
 
-namespace Terminus\Commands;
+namespace Pantheon\TerminusPancakes\Apps;
 
 /**
  * Open Site database in MySQL Workbench
  */
-class MySqlWorkbenchCommand extends PancakesCommand {
+class MySQLWorkbenchCommand extends PancakesApp{
 
   /**
    * {@inheritdoc}
@@ -28,50 +28,23 @@ class MySqlWorkbenchCommand extends PancakesCommand {
   public $app_home_location;
 
   /**
-   * Open Site database in MySQL Workbench
-   */
-  public function pancakes($args, $assoc_args) {
-    $domain = $this->environment->get('id') . '-' . $this->site->get('name') . '.pantheon.io';
-    $this->connection_info['domain'] = $domain;
-    $this->connection_info['connection_id'] = md5($domain . '.connection');
-    $this->connection_info['server_instance_id'] = md5($domain . '.server');
-    $parts = explode(':', $this->connection_info['sftp_url']);
-    if (isset($parts[2])) {
-      $sftp_port = $parts[2];
-    } else {
-      $sftp_port = 2222;
-    }
-    $this->connection_info['sftp_port'] = $sftp_port;
-
-    $connections_xml = $this->getConnectionXml($this->connection_info);
-    $connections_file = "{$this->app_home_location}connections.xml";
-    $this->writeXML($connections_file, $connections_xml, $domain);
-
-    $server_instances_xml = $this->getServerInstanceXml($this->connection_info);
-    $server_instances_file = "{$this->app_home_location}server_instances.xml";
-    $this->writeXML($server_instances_file, $server_instances_xml, $domain);
-
-    $this->execCommand($this->app_location, [$this->flag('admin'), $domain]);
-  }
-
-  /**
    * Validate MySQLWorkbench can run
    *
    * @return bool
    */
-  protected function validate() {
-     /* @TODO: Terminus now has Utils for this, wait until most people are using it and switch it */
+  public function validate() {
+    /* @TODO: Terminus now has Utils for this, wait until most people are using it and switch it */
     $os = strtoupper(substr(PHP_OS, 0, 3));
-    switch ($os) {
-      case 'DAR':
+    switch (php_uname('s')) {
+      case 'Darwin':
         $this->app_location = '/Applications/MySQLWorkbench.app/Contents/MacOS/MySQLWorkbench';
         $this->app_home_location = getenv('HOME') . '/Library/Application Support/MySQL/Workbench/';
         break;
-      case 'LIN';
+      case 'Linux';
         $this->app_location = 'mysql-workbench';
         $this->app_home_location = getenv('HOME') . '/.mysql/workbench/';
         break;
-      case 'WIN':
+      case 'Windows NT':
         $candidates = array(
           '\Program Files\MySQL\MySQL Workbench 6.3 CE\MySQLWorkbench.exe',
           '\Program Files (x86)\MySQL\MySQL Workbench 6.3 CE\MySQLWorkbench.exe',
@@ -96,13 +69,28 @@ class MySqlWorkbenchCommand extends PancakesCommand {
   }
 
   /**
+   * Open Site database in MySQL Workbench
+   */
+  public function open() {
+    $connections_xml = $this->getConnectionXml($this->connection_info);
+    $connections_file = "{$this->app_home_location}connections.xml";
+    $this->writeXML($connections_file, $connections_xml, $this->connection_info['domain']);
+
+    $server_instances_xml = $this->getServerInstanceXml($this->connection_info);
+    $server_instances_file = "{$this->app_home_location}server_instances.xml";
+    $this->writeXML($server_instances_file, $server_instances_xml, $this->connection_info['domain']);
+
+    $this->execCommand($this->app_location, [$this->flag('admin'), $this->connection_info['domain']]);
+  }
+
+  /**
    * Generate the XML for opening a connection in MySQL Workbench
    */
   protected function getConnectionXml($ci) {
     return <<<XML
     <value type="object" struct-name="db.mgmt.Connection" id="{$ci['connection_id']}" struct-checksum="0x96ba47d8">
       <link type="object" struct-name="db.mgmt.Driver" key="driver">com.mysql.rdbms.mysql.driver.native_sshtun</link>
-      <value type="string" key="hostIdentifier">Mysql@{$ci['mysql_host']}:{$ci['mysql_port']}@{$ci['sftp_host']}:{$ci['sftp_port']}</value>
+      <value type="string" key="hostIdentifier">Mysql@{$ci['mysql_host']}:{$ci['mysql_port']}@{$ci['sftp_host']}:{$ci['sftp_port']}</va
       <value type="int" key="isDefault">1</value>
       <value _ptr_="0x321bf00" type="dict" key="modules"/>
       <value _ptr_="0x321bf70" type="dict" key="parameterValues">
@@ -170,5 +158,4 @@ XML;
       fclose($handle);
     }
   }
-
 }

@@ -1,13 +1,11 @@
 <?php
 
-namespace Terminus\Commands;
-
-use Terminus\Utils;
+namespace Pantheon\TerminusPancakes\Apps;
 
 /**
  * Open Site database in SequelPro
  */
-class SequelProCommand extends PancakesCommand {
+class SequelProCommand extends PancakesApp{
   /**
    * {@inheritdoc}
    */
@@ -21,27 +19,23 @@ class SequelProCommand extends PancakesCommand {
   /**
    * Open Site database in SequelPro
    */
-  public function pancakes($args, $assoc_args) {
+  public function open() {
     $xmldata = $this->getSequelProOpenFile();
-
     $tempfile = $this->writeFile($xmldata, 'spf');
-
     $this->execCommand('open', $tempfile);
   }
 
   /**
    * Validates the app can be used
    */
-  protected function validate() {
-    // @TODO: Validate SequelPro better
-    // @TODO: New Terminus has better way to check OS
-    return strtoupper(substr(PHP_OS, 0, 3)) === 'DAR';
+  public function validate() {
+    return php_uname('s') == 'Darwin';
   }
 
   /**
    * Gets the XML for opening a connection in Sequel Pro
    */
-  public function getSequelProOpenFile() {
+  private function getSequelProOpenFile() {
     $label = htmlspecialchars($this->connection_info['site_label']);
     $mysql_host = htmlspecialchars($this->connection_info['mysql_host']);
     $mysql_port = htmlspecialchars($this->connection_info['mysql_port']);
