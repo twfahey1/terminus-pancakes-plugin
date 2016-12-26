@@ -3,7 +3,7 @@
 Terminus plugin to open any Pantheon site database using a SQL GUI client.
 
 ## Installation
-**_Note:_** This plugin will only work with Terminux 1.x
+**_Note:_** This plugin will only work with Terminux 1.x. For Terminus 0.13, go [here](https://github.com/derimagia/terminus-pancakes/releases/tag/0.1).
 
 Refer to the [Terminus Getting Started](https://pantheon.io/docs/terminus/plugins/).
 
