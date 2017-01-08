@@ -1,7 +1,7 @@
 {
-  "name": "derimagia/terminus-pancakes",
+  "name": "terminus-plugin-project/terminus-pancakes",
   "description": "Pancakes - A Terminus plugin for Sequel Pro",
-  "homepage": "https://github.com/derimagia/terminus-pancakes",
+  "homepage": "https://github.com/terminus-plugin-project/terminus-pancakes",
   "license": "MIT",
   "type": "terminus-plugin",
   "require": {
