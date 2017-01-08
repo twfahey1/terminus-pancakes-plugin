@@ -2,6 +2,13 @@
   "name": "terminus-plugin-project/terminus-pancakes",
   "description": "Pancakes - A Terminus plugin for Sequel Pro",
   "homepage": "https://github.com/terminus-plugin-project/terminus-pancakes",
+  "authors": [
+    {
+      "name": "Dave Wikoff",
+      "email" : "dwikoff@mindgrub.com",
+      "role": "Developer"
+    }
+  ],
   "license": "MIT",
   "type": "terminus-plugin",
   "require": {
