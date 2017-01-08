@@ -1,5 +1,8 @@
 # Pancakes
 
+[![Terminus v1.x Compatible](https://img.shields.io/badge/terminus-v1.x-green.svg)](https://github.com/terminus-plugin-project/terminus-pancakes/releases/tag/1.0)
+[![Terminus v0.x Compatible](https://img.shields.io/badge/terminus-v0.x-green.svg)](https://github.com/terminus-plugin-project/terminus-pancakes/releases/tag/0.1)
+
 Terminus plugin to open any Pantheon site database using a SQL GUI client.
 
 ## Installation
