@@ -5,7 +5,7 @@ namespace Pantheon\TerminusPancakes\Apps;
 /**
  * Open Site database in MySQL Workbench
  */
-class MySQLWorkbenchCommand extends PancakesApp {
+class MySQLWorkbenchApp extends PancakesApp {
 
   /**
    * {@inheritdoc}

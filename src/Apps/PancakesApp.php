@@ -2,8 +2,6 @@
 
 namespace Pantheon\TerminusPancakes\Apps;
 
-use Pantheon\Terminus\Commands\TerminusCommand;
-
 /**
  * Interface PancakesApp
  * @package Pantheon\TerminusPancakes\Apps

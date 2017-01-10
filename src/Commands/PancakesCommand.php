@@ -7,6 +7,7 @@ use Pantheon\Terminus\Site\SiteAwareInterface;
 use Pantheon\Terminus\Site\SiteAwareTrait;
 use Pantheon\Terminus\Collections\Sites;
 use Pantheon\Terminus\Exceptions\TerminusException;
+use Pantheon\TerminusPancakes\Apps\PancakesApp;
 
 /**
  * Open Site database in your favorite MySQL Editor
@@ -148,6 +149,8 @@ class PancakesCommand extends TerminusCommand Implements SiteAwareInterface {
   }
 }
 
+// Force PancakesApp to be first.
+require_once dirname(__FILE__) . '/../Apps/PancakesApp.php';
 
 // Include Sub-Commands - Terminus uses DirectoryIterator so we need to have better control over the order.
 $iterator = new \DirectoryIterator(dirname(__FILE__) . '/../Apps');

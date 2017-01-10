@@ -5,8 +5,7 @@ namespace Pantheon\TerminusPancakes\Apps;
 /**
  * Open Site database in HeidiSQL
  */
-class HeidiSqlCommand extends PancakesApp {
-
+class HeidiSqlApp extends PancakesApp {
   /**
    * {@inheritdoc}
    */
@@ -21,7 +20,6 @@ class HeidiSqlCommand extends PancakesApp {
    * - App Location Candinates
    */
   public $app_location;
-
 
   public function open(){
     $this->execCommand('start /b ""', [
