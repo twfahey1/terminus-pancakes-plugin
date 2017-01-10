@@ -1,6 +1,6 @@
 <?php
 
-namespace Pantheon\TerminusPancakes\Apps;
+namespace Pantheon\TerminusPancakes\Commands;
 
 use Pantheon\Terminus\Commands\TerminusCommand;
 use Pantheon\Terminus\Site\SiteAwareInterface;
@@ -13,9 +13,7 @@ use Pantheon\Terminus\Exceptions\TerminusException;
  *
  * Terminus loads files based on \DirectoryIterator, so throw it on the top.
  */
-class PancakesCommand extends TerminusCommand Implements SiteAwareInterface
-{
-
+class PancakesCommand extends TerminusCommand Implements SiteAwareInterface {
   use SiteAwareTrait;
 
   /**

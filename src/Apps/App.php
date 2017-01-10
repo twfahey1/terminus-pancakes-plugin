@@ -8,7 +8,7 @@ use Pantheon\Terminus\Commands\TerminusCommand;
  * Interface PancakesApp
  * @package Pantheon\TerminusPancakes\Apps
  */
-class PancakesApp{
+class PancakesApp {
 
   /**
    * @var array

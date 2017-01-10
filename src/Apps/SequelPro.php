@@ -5,7 +5,7 @@ namespace Pantheon\TerminusPancakes\Apps;
 /**
  * Open Site database in SequelPro
  */
-class SequelProCommand extends PancakesApp{
+class SequelProCommand extends PancakesApp {
   /**
    * {@inheritdoc}
    */
