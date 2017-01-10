@@ -33,8 +33,6 @@ class MySQLWorkbenchApp extends PancakesApp {
    * @return bool
    */
   public function validate() {
-    /* @TODO: Terminus now has Utils for this, wait until most people are using it and switch it */
-    $os = strtoupper(substr(PHP_OS, 0, 3));
     switch (php_uname('s')) {
       case 'Darwin':
         $this->app_location = '/Applications/MySQLWorkbench.app/Contents/MacOS/MySQLWorkbench';
