@@ -6,9 +6,20 @@
 Terminus plugin to open any Pantheon site database using a SQL GUI client.
 
 ## Installation
+
+### Composer
+
+For quick install using Composer, install using:
+
+`composer create-project --stability=beta -d ~/.terminus/plugins/ terminus-plugin-project/terminus-pancakes-plugin:~1`
+
+### Manually
+
+Download project and unzip to `~/.terminus/plugins/terminus-pancakes-plugin`
+
+
 **_Note:_** This plugin will only work with Terminux 1.x. For Terminus 0.13, go [here](https://github.com/derimagia/terminus-pancakes/releases/tag/0.1).
 
-Refer to the [Terminus Getting Started](https://pantheon.io/docs/terminus/plugins/).
 
 ## Supported:
 [HeidiSQL](http://www.heidisql.com/) (Windows)
@@ -48,3 +59,5 @@ Likewise, if your version of MySQL Workbench is installed outside the `Program F
 
 ## Help:
 Run `terminus help site:pancakes` for help.
+
+Refer to the [Terminus Getting Started](https://pantheon.io/docs/terminus/plugins/).
