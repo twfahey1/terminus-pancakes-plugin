@@ -28,7 +28,7 @@ Download project and unzip to `~/.terminus/plugins/terminus-pancakes-plugin`
 
 [MySQL Workbench](https://dev.mysql.com/downloads/workbench/) (Mac, Linux and Windows)
 
-[MySQL CLI](https://dev.mysql.com/doc/refman/5.5/en/mysql.html/) (Mac and Linux)
+[MySQL CLI](https://dev.mysql.com/doc/refman/5.5/en/mysql.html) (Mac and Linux)
 
 **_Note: The latest version of MySQL Workbench for Mac (version 6.3.6) is not compatible with this plugin._**
 
