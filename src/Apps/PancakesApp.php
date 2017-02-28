@@ -2,39 +2,52 @@
 
 namespace Pantheon\TerminusPancakes\Apps;
 
+use Pantheon\TerminusPancakes\Commands\PancakesCommand;
+use Psr\Log\LoggerInterface;
+
 /**
  * Interface PancakesApp
+ *
  * @package Pantheon\TerminusPancakes\Apps
  */
 class PancakesApp {
 
   /**
+   * Connection Info Array
+   *
    * @var array
    */
   protected $connection_info;
 
   /**
-   * @var
+   * @var LoggerInterface
    */
   protected $logger;
 
   /**
-   * @var \Pantheon\TerminusPancakes\Commands\PancakesCommand
+   * @var PancakesCommand
    */
   protected $command;
 
   /**
-   * {@inheritdoc}
-   */
-  public $aliases = [];
-
-  /**
-   * {@inheritdoc}
+   * Main app name.
+   *
+   * @var string
    */
   public $app = '';
 
   /**
+   * Array of aliases for the pancakes app.
+   *
+   * @var string[]
+   */
+  public $aliases = [];
+
+  /**
    * PancakesApp constructor.
+   *
+   * @param $connection_info
+   * @param $logger
    */
   public function __construct($connection_info, $logger){
     $this->connection_info = $connection_info;
@@ -49,12 +62,16 @@ class PancakesApp {
   }
 
   /**
+   * Open the app with the connection info.
+   *
    * @return void
    */
   public function open(){}
 
   /**
-   * @return void
+   * Validates if the app can be used.
+   *
+   * @return bool
    */
   public function validate(){}
 
@@ -74,7 +91,7 @@ class PancakesApp {
   protected function flag($name) {
     // I was very tempted to use str_pad....
     // return str_pad($name, strlen($name) + 1 + !Utils\isWindows(), '-', STR_PAD_LEFT);
-    return ($this->isWindows() ? "-" : "--") . $name;
+    return ($this->isWindows() ? '-' : '--') . $name;
   }
 
   /**
@@ -144,11 +161,12 @@ class PancakesApp {
   /**
    * Execute Command
    * @param $command
-   * @param $arguments
-   * @return bool True if command executes without an error
+   * @param array|string $arguments
+   * @return bool true
+   *    If command executes without an error
    */
-  protected function execCommand($command, $arguments = array()) {
-    $arguments = is_array($arguments) ? $arguments : [$arguments];
+  protected function execCommand($command, $arguments = '') {
+    $arguments = is_array($arguments) ? $arguments : (array) $arguments;
 
     if (!empty($arguments)) {
       $command .= ' ' . implode(' ', $arguments);
@@ -168,9 +186,19 @@ class PancakesApp {
     $tempfile = tempnam(sys_get_temp_dir(), 'terminus-pancakes');
     $tempfile .= !empty($suffix) ? ('.' . $suffix) : '';
 
-    $handle = fopen($tempfile, "w");
+    $handle = fopen($tempfile, 'w');
     fwrite($handle, $data);
     fclose($handle);
     return $tempfile;
   }
+
+  /**
+   * Gets the weight of the pancakes app.
+   *
+   * @return int
+   */
+  public function weight() {
+    return 0;
+  }
+
 }

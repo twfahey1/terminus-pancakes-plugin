@@ -6,6 +6,7 @@ namespace Pantheon\TerminusPancakes\Apps;
  * Open Site database in HeidiSQL
  */
 class HeidiSqlApp extends PancakesApp {
+
   /**
    * {@inheritdoc}
    */

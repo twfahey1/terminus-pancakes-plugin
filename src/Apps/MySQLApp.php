@@ -6,6 +6,7 @@ namespace Pantheon\TerminusPancakes\Apps;
  * Open Site database in MySQL CLI
  */
 class MySQLApp extends PancakesApp {
+  
   /**
    * {@inheritdoc}
    */
@@ -17,12 +18,12 @@ class MySQLApp extends PancakesApp {
   public $app = 'MySQL';
 
   /**
-   * - App Location Candinates
+   * App Location
    */
   public $app_location;
 
   public function open(){
-    $cmd = join(' ', [
+    $cmd = implode(' ', [
       'mysql',
       '-h ' . $this->escapeShellArg($this->connection_info['mysql_host']),
       '-P ' . $this->escapeShellArg($this->connection_info['mysql_port']),
@@ -54,4 +55,14 @@ class MySQLApp extends PancakesApp {
     $this->app_location = 'mysql';
     return $this->which($this->app_location);
   }
+
+  /**
+   * Priority for mysql cli should be last.
+   *
+   * @return int
+   */
+  public function weight() {
+    return 100;
+  }
+
 }

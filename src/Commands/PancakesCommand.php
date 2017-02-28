@@ -5,8 +5,12 @@ namespace Pantheon\TerminusPancakes\Commands;
 use Pantheon\Terminus\Commands\TerminusCommand;
 use Pantheon\Terminus\Site\SiteAwareInterface;
 use Pantheon\Terminus\Site\SiteAwareTrait;
-use Pantheon\Terminus\Collections\Sites;
 use Pantheon\Terminus\Exceptions\TerminusException;
+use Pantheon\Terminus\Models\Environment;
+use Pantheon\Terminus\Models\Site;
+use Pantheon\TerminusPancakes\Apps\PancakesApp;
+
+include __DIR__ . DIRECTORY_SEPARATOR . '../..' . DIRECTORY_SEPARATOR . 'vendor/autoload.php';
 
 /**
  * Open Site database in your favorite MySQL Editor
@@ -17,7 +21,7 @@ class PancakesCommand extends TerminusCommand Implements SiteAwareInterface {
   use SiteAwareTrait;
 
   /**
-   * @var
+   * @var array
    */
   private $connection_info;
 
@@ -33,8 +37,12 @@ class PancakesCommand extends TerminusCommand Implements SiteAwareInterface {
    * @option string $app Application to Open (optional)
    *
    * @usage terminus site:pancakes <site>.<env> <app>
+   *
+   * @throws TerminusException
    */
-  public function pancakes($site_env, $options = ['app' => NULL]) {
+  public function pancakes($site_env, array $options = ['app' => NULL]) {
+    /* @var $env Environment */
+    /* @var $site Site */
     list($site, $env) = $this->getSiteEnv($site_env);
     $env->wake();
 
@@ -52,7 +60,7 @@ class PancakesCommand extends TerminusCommand Implements SiteAwareInterface {
     }
     $this->connection_info['sftp_port'] = $sftp_port;
 
-    $candidate_instances = $this->getCandinatePlugins();
+    $candidate_instances = $this->getCandidatePlugins();
 
     $instance = NULL;
 
@@ -118,43 +126,34 @@ class PancakesCommand extends TerminusCommand Implements SiteAwareInterface {
   }
 
   /**
-   * Gets Candinate Classes that are Loaded
+   * Gets Candidate Classes that are Loaded
+   *
    * @return array
    */
-  private function getCandinatePlugins() {
-    // Find our Children!
-    $classes = get_declared_classes();
-    $candidate_instances = [];
+  private function getCandidatePlugins() {
+    $iterator = new \DirectoryIterator(__DIR__ . '/../Apps');
 
-    foreach ($classes as $class) {
-      $reflection = new \ReflectionClass($class);
-      if ($reflection->isSubclassOf('Pantheon\TerminusPancakes\Apps\PancakesApp')) {
-        $candidate_instance = $reflection->newInstanceArgs([
-          $this->connection_info,
-          $this->log()
-        ]);
+    // Autoload plugins
+    foreach ($iterator as $file) {
+      $plugin = 'Pantheon\TerminusPancakes\Apps\\' . $file->getBasename('.php');
 
-        if (method_exists($candidate_instance, 'validate')) {
-          if (!$candidate_instance->validate()) {
-            continue;
-          }
-        }
-
-        $candidate_instances[] = $candidate_instance;
+      // Don't load PancakesApp since that's the base plugin.
+      if (PancakesApp::class === $plugin || !$file->isFile()) {
+        continue;
       }
+
+      /* @var $candidate_instance PancakesApp */
+      $candidate_instance = new $plugin($this->connection_info, $this->log());
+
+      if (!$candidate_instance->validate()) {
+        continue;
+      }
+
+      $candidate_instances[$candidate_instance->weight()] = $candidate_instance;
     }
 
+    ksort($candidate_instances);
+
     return $candidate_instances;
-  }
-}
-
-// Force PancakesApp to be first.
-require_once dirname(__FILE__) . '/../Apps/PancakesApp.php';
-
-// Include Sub-Commands - Terminus uses DirectoryIterator so we need to have better control over the order.
-$iterator = new \DirectoryIterator(dirname(__FILE__) . '/../Apps');
-foreach ($iterator as $file) {
-  if ($file->isFile()) {
-    include_once $file->getPathname();
   }
 }

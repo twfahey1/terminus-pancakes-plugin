@@ -6,6 +6,7 @@ namespace Pantheon\TerminusPancakes\Apps;
  * Open Site database in SequelPro
  */
 class SequelProApp extends PancakesApp {
+
   /**
    * {@inheritdoc}
    */
@@ -29,7 +30,7 @@ class SequelProApp extends PancakesApp {
    * Validates the app can be used
    */
   public function validate() {
-    return php_uname('s') == 'Darwin';
+    return php_uname('s') === 'Darwin';
   }
 
   /**
