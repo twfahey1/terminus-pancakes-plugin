@@ -1,5 +1,6 @@
 # Pancakes
 
+[![Terminus v2.x Compatible](https://img.shields.io/badge/terminus-v2.x-green.svg)](https://github.com/terminus-plugin-project/terminus-pancakes/releases/tag/2.0)
 [![Terminus v1.x Compatible](https://img.shields.io/badge/terminus-v1.x-green.svg)](https://github.com/terminus-plugin-project/terminus-pancakes/releases/tag/1.0)
 [![Terminus v0.x Compatible](https://img.shields.io/badge/terminus-v0.x-green.svg)](https://github.com/terminus-plugin-project/terminus-pancakes/releases/tag/0.1)
 
@@ -11,7 +12,7 @@ Terminus plugin to open any Pantheon site database using a SQL GUI client.
 
 For quick install using Composer, install using:
 
-`composer create-project --stability=beta -d ~/.terminus/plugins/ terminus-plugin-project/terminus-pancakes-plugin:~1`
+`composer create-project --stability=beta -d ~/.terminus/plugins/ terminus-plugin-project/terminus-pancakes-plugin:~2`
 
 ### Manually
 
