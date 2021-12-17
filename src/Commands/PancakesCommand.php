@@ -10,8 +10,6 @@ use Pantheon\Terminus\Models\Environment;
 use Pantheon\Terminus\Models\Site;
 use Pantheon\TerminusPancakes\Apps\PancakesApp;
 
-include __DIR__ . DIRECTORY_SEPARATOR . '../..' . DIRECTORY_SEPARATOR . 'vendor/autoload.php';
-
 /**
  * Open Site database in your favorite MySQL Editor
  *
