@@ -45,7 +45,6 @@ class TablePlusApp extends PancakesApp {
     foreach ($candidates as $candinate) {
       if (file_exists($candinate)) {
         $this->app_location = $candinate . '/Contents/MacOS/TablePlus';
-        print_r($this->app_location);
         return $this->which($this->escapeShellArg($this->app_location));
       }
     }
